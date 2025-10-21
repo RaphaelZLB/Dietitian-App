@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/screens/splash_screen.dart';
+import '../widgets/main_navigation.dart';
 
 /// Application routing configuration using GoRouter.
 ///
 /// This class provides centralized route management for the diet app.
 /// Add new routes here as the app grows.
+/// For navigating use: GoRouter.of(context).go('/path');
+/// Or context.go('/path');
+/// For navigating use: GoRouter.of(context).push('/home');????
 class AppRouter {
   AppRouter._();
 
+  static final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
+
+  static GlobalKey<NavigatorState> get navigatorKey => _navigatorKey;
+
   static final GoRouter router = GoRouter(
+    navigatorKey: _navigatorKey,
     initialLocation: '/splash',
     routes: [
       GoRoute(
@@ -17,10 +26,25 @@ class AppRouter {
         name: 'splash',
         builder: (context, state) => const SplashScreen(),
       ),
-      GoRoute(
-        path: '/home',
-        name: 'home',
-        builder: (context, state) => const HomePage(),
+      ShellRoute(
+        builder: (context, state, child) => MainNavigation(child: child),
+        routes: [
+          GoRoute(
+            path: '/home',
+            name: 'home',
+            builder: (context, state) => const HomeTab(),
+          ),
+          GoRoute(
+            path: '/clients',
+            name: 'clients',
+            builder: (context, state) => const ClientsTab(),
+          ),
+          GoRoute(
+            path: '/schedule',
+            name: 'schedule',
+            builder: (context, state) => const ScheduleTab(),
+          ),
+        ],
       ),
       // Add more routes here as needed
       // GoRoute(
@@ -33,25 +57,6 @@ class AppRouter {
   );
 }
 
-/// Placeholder home page
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Diet App'),
-      ),
-      body: const Center(
-        child: Text(
-          'Welcome to Diet App!',
-          style: TextStyle(fontSize: 24),
-        ),
-      ),
-    );
-  }
-}
 
 /// Error page for invalid routes
 class ErrorPage extends StatelessWidget {
