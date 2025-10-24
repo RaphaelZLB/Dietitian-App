@@ -1,35 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class Spacing {
-  static const double twoXSmall = 4.0; // 2xSmall
-  static const double xSmall = 8.0; // xSmall
-  static const double small = 12.0; // small
-  static const double medium = 16.0; // medium [Base Size]
-  static const double large = 20.0; // large
-  static const double xLarge = 24.0; // xLarge
-  static const double twoXLarge = 32.0; // 2xLarge
-}
-
-class Sizes {
-  static const double twoXSmall = 4.0; // Very small UI elements
-  static const double xSmall = 8.0; // Extra small size
-  static const double small = 12.0; // Small size
-  static const double medium = 16.0; // Base medium size [Base Size]
-  static const double large = 20.0; // Large size
-  static const double xLarge = 24.0; // Extra large size
-  static const double twoXLarge = 32.0; // 2x Extra large size
-  static const double threeXLarge = 40.0; // 3x Extra large size
-  static const double fourXLarge = 48.0; // 4x Extra large size
-  static const double fiveXLarge = 56.0; // 5x Extra large size
-  static const double sixXLarge = 64.0; // 6x Extra large size
-  static const double sevenXLarge = 72.0; // 7x Extra large size
-  static const double eightXLarge = 80.0; // 8x Extra large size
-  static const double nineXLarge = 88.0; // 9x Extra large size
-  static const double tenXLarge = 96.0; // 10x Extra large size
-  static const double elevenXLarge =
-      100.0; // 11x Extra large size, reaching 100
-}
-
+// For Spacing and Sizes use flutter_screenutil .w .h .r .sp
 class MaterialTheme {
   final TextTheme textTheme;
 
@@ -176,45 +148,269 @@ class MaterialTheme {
   );
 }
 
-TextStyle headlineTextStyle(Color color) =>
-    TextStyle(fontSize: Sizes.xLarge, color: color, fontFamily: "Inter");
+/// Dynamic typography scale with responsive sizing
+class TypographyScale {
 
-TextStyle headlineBoldTextStyle(Color color) => TextStyle(
-  fontSize: Sizes.xLarge,
-  color: color,
-  fontFamily: "Inter",
-  fontWeight: FontWeight.bold,
-);
+  /// 45px - Large display text (responsive)
+  /// Usage: Section headers, feature titles, onboarding headlines
+  /// Widgets: Text, RichText, AutoSizeText, FittedBox
+  static double get displayMedium => 45.0.sp;
+  
+  /// 36px - Medium display text (responsive)
+  /// Usage: Card titles, modal headers, important announcements
+  /// Widgets: Text, RichText, ListTile.title, Card.title
+  static double get displaySmall => 36.0.sp;
 
-TextStyle titleTextStyle(Color color) =>
-    TextStyle(fontSize: Sizes.large, fontFamily: "Inter", color: color);
+  // HEADLINE STYLES - For section headers and important text
+  /// 32px - Large headlines (responsive)
+  /// Usage: Page titles, major section headers, dashboard titles
+  /// Widgets: Text, AppBar.title, DrawerHeader, ExpansionTile.title
+  static double get headlineLarge => 32.0.sp;
+  
+  /// 28px - Medium headlines (responsive)
+  /// Usage: Subsection headers, feature titles, form section headers
+  /// Widgets: Text, ListTile.title, Card.title, ExpansionTile.title
+  static double get headlineMedium => 28.0.sp;
+  
+  /// 24px - Small headlines (responsive)
+  /// Usage: Card headers, list section titles, dialog titles
+  /// Widgets: Text, ListTile.title, Dialog.title, AlertDialog.title
+  static double get headlineSmall => 24.0.sp;
 
-TextStyle titleBoldTextStyle(Color color) => TextStyle(
-  fontSize: Sizes.large,
-  color: color,
-  fontFamily: "Inter",
-  fontWeight: FontWeight.bold,
-);
+  // TITLE STYLES - For content titles and labels
+  /// 22px - Large titles (responsive)
+  /// Usage: Article titles, profile names, important labels
+  /// Widgets: Text, ListTile.title, Card.title, Chip.label
+  static double get titleLarge => 22.0.sp;
+  
+  /// 16px - Medium titles (responsive)
+  /// Usage: Button text, navigation labels, form field labels
+  /// Widgets: Text, ElevatedButton.child, TextButton.child, BottomNavigationBarItem.label
+  static double get titleMedium => 16.0.sp;
+  
+  /// 14px - Small titles (responsive)
+  /// Usage: Tab labels, small buttons, secondary labels
+  /// Widgets: Text, Tab.label, Chip.label, Badge.label
+  static double get titleSmall => 14.0.sp;
 
-TextStyle subTitleTextStyle(Color color) =>
-    TextStyle(fontSize: Sizes.medium, color: color, fontFamily: "Inter");
+  // BODY STYLES - For main content text
+  /// 16px - Large body text (responsive)
+  /// Usage: Main content, descriptions, form input text
+  /// Widgets: Text, TextField.style, TextFormField.style, ListTile.subtitle
+  static double get bodyLarge => 16.0.sp;
+  
+  /// 14px - Medium body text (responsive)
+  /// Usage: Secondary content, captions, helper text
+  /// Widgets: Text, ListTile.subtitle, Card.content, ExpansionTile.children
+  static double get bodyMedium => 14.0.sp;
+  
+  /// 12px - Small body text (responsive)
+  /// Usage: Fine print, metadata, timestamps
+  /// Widgets: Text, ListTile.trailing, Card.actions, SnackBar.content
+  static double get bodySmall => 12.0.sp;
+}
 
-TextStyle subTitleBoldTextStyle(Color color) => TextStyle(
-  fontSize: Sizes.medium,
-  color: color,
-  fontFamily: "Inter",
-  fontWeight: FontWeight.bold,
-);
+/// App text styles with consistent typography
+// class AppTextStyles {
 
-TextStyle labelTextStyle(Color color) =>
-    TextStyle(fontSize: Sizes.small, fontFamily: "Inter", color: color);
+//   /// Font family
+//   static const String _fontFamily = "Lato";
 
-TextStyle labelBoldTextStyle(Color color) => TextStyle(
-  fontSize: Sizes.small,
-  color: color,
-  fontFamily: "Inter",
-  fontWeight: FontWeight.bold,
-);
+//   /// Font Weight
+//   static const FontWeight light = FontWeight.w300;
+//   static const FontWeight regular = FontWeight.w400;
+//   static const FontWeight medium = FontWeight.w500;
+//   static const FontWeight semiBold = FontWeight.w600;
+//   static const FontWeight bold = FontWeight.w700;
+//   static const FontWeight extraBold = FontWeight.w800;
+
+
+//   /// Display style
+//   static TextStyle displayTextStyle({Color? color}) => TextStyle(
+//     fontSize: TypographyScale.displayMedium,
+//     fontFamily: _fontFamily,
+//     color: color,
+//     fontWeight: regular,
+//     height: 1.2,
+//   );
+//   static TextStyle displayBoldTextStyle({Color? color}) => TextStyle(
+//     fontSize: TypographyScale.displayMedium,
+//     fontFamily: _fontFamily,
+//     color: color,
+//     fontWeight: bold,
+//     height: 1.2,
+//   );
+
+//   static TextStyle displaySmallTextStyle({Color? color}) => TextStyle(
+//     fontSize: TypographyScale.displaySmall,
+//     fontFamily: _fontFamily,
+//     color: color,
+//     fontWeight: regular,
+//     height: 1.2,
+//   );
+//   static TextStyle displayBoldSmallTextStyle({Color? color}) => TextStyle(
+//     fontSize: TypographyScale.displaySmall,
+//     fontFamily: _fontFamily,
+//     color: color,
+//     fontWeight: bold,
+//     height: 1.2,
+//   );
+
+//   // Headline styles
+//   static TextStyle headlineLargeTextStyle({Color? color}) => TextStyle(
+//     fontSize: TypographyScale.headlineLarge,
+//     fontFamily: _fontFamily,
+//     color: color,
+//     fontWeight: regular,
+//     height: 1.3,
+//   );
+//   static TextStyle headlineBoldLargeTextStyle({Color? color}) => TextStyle(
+//     fontSize: TypographyScale.headlineLarge,
+//     fontFamily: _fontFamily,
+//     color: color,
+//     fontWeight: bold,
+//     height: 1.3,
+//   );
+
+//   static TextStyle headlineMediumTextStyle({Color? color}) => TextStyle(
+//     fontSize: TypographyScale.headlineMedium,
+//     fontFamily: _fontFamily,
+//     color: color,
+//     fontWeight: fontWeight ?? FontWeights.semiBold,
+//     height: 1.3,
+//   );
+
+//   static TextStyle headlineSmall({Color? color, FontWeight? fontWeight}) => TextStyle(
+//     fontSize: TypographyScale.headlineSmall,
+//     fontFamily: _fontFamily,
+//     color: color,
+//     fontWeight: fontWeight ?? FontWeights.semiBold,
+//     height: 1.3,
+//   );
+
+//   // Title styles
+//   static TextStyle titleLarge({Color? color, FontWeight? fontWeight}) => TextStyle(
+//     fontSize: TypographyScale.titleLarge,
+//     fontFamily: _fontFamily,
+//     color: color,
+//     fontWeight: fontWeight ?? FontWeights.medium,
+//     height: 1.4,
+//   );
+
+//   static TextStyle titleMedium({Color? color, FontWeight? fontWeight}) => TextStyle(
+//     fontSize: TypographyScale.titleMedium,
+//     fontFamily: _fontFamily,
+//     color: color,
+//     fontWeight: fontWeight ?? FontWeights.medium,
+//     height: 1.4,
+//   );
+
+//   static TextStyle titleSmall({Color? color, FontWeight? fontWeight}) => TextStyle(
+//     fontSize: TypographyScale.titleSmall,
+//     fontFamily: _fontFamily,
+//     color: color,
+//     fontWeight: fontWeight ?? FontWeights.medium,
+//     height: 1.4,
+//   );
+
+//   // Body styles
+//   static TextStyle bodyLarge({Color? color, FontWeight? fontWeight}) => TextStyle(
+//     fontSize: TypographyScale.bodyLarge,
+//     fontFamily: _fontFamily,
+//     color: color,
+//     fontWeight: fontWeight ?? FontWeights.regular,
+//     height: 1.5,
+//   );
+
+//   static TextStyle bodyMedium({Color? color, FontWeight? fontWeight}) => TextStyle(
+//     fontSize: TypographyScale.bodyMedium,
+//     fontFamily: _fontFamily,
+//     color: color,
+//     fontWeight: fontWeight ?? FontWeights.regular,
+//     height: 1.5,
+//   );
+
+//   static TextStyle bodySmall({Color? color, FontWeight? fontWeight}) => TextStyle(
+//     fontSize: TypographyScale.bodySmall,
+//     fontFamily: _fontFamily,
+//     color: color,
+//     fontWeight: fontWeight ?? FontWeights.regular,
+//     height: 1.5,
+//   );
+
+//   // Label styles
+//   static TextStyle labelLarge({Color? color, FontWeight? fontWeight}) => TextStyle(
+//     fontSize: TypographyScale.labelLarge,
+//     fontFamily: _fontFamily,
+//     color: color,
+//     fontWeight: fontWeight ?? FontWeights.medium,
+//     height: 1.4,
+//   );
+
+//   static TextStyle labelMedium({Color? color, FontWeight? fontWeight}) => TextStyle(
+//     fontSize: TypographyScale.labelMedium,
+//     fontFamily: _fontFamily,
+//     color: color,
+//     fontWeight: fontWeight ?? FontWeights.medium,
+//     height: 1.4,
+//   );
+
+//   static TextStyle labelSmall({Color? color, FontWeight? fontWeight}) => TextStyle(
+//     fontSize: TypographyScale.labelSmall,
+//     fontFamily: _fontFamily,
+//     color: color,
+//     fontWeight: fontWeight ?? FontWeights.medium,
+//     height: 1.4,
+//   );
+
+//   // Legacy compatibility methods
+//   static TextStyle headlineTextStyle(Color color) => headlineLarge(color: color);
+//   static TextStyle headlineBoldTextStyle(Color color) => headlineLarge(color: color, fontWeight: FontWeights.bold);
+//   static TextStyle titleTextStyle(Color color) => titleMedium(color: color);
+//   static TextStyle titleBoldTextStyle(Color color) => titleMedium(color: color, fontWeight: FontWeights.bold);
+//   static TextStyle subTitleTextStyle(Color color) => bodyMedium(color: color);
+//   static TextStyle subTitleBoldTextStyle(Color color) => bodyMedium(color: color, fontWeight: FontWeights.bold);
+//   static TextStyle labelTextStyle(Color color) => labelMedium(color: color);
+//   static TextStyle labelBoldTextStyle(Color color) => labelMedium(color: color, fontWeight: FontWeights.bold);
+// }
+
+/// Utility class for common text style patterns
+class TextStyleUtils {
+  /// Create a text style with custom properties
+  static TextStyle custom({
+    double? fontSize,
+    Color? color,
+    FontWeight? fontWeight,
+    String? fontFamily,
+    double? height,
+    double? letterSpacing,
+    TextDecoration? decoration,
+  }) => TextStyle(
+    fontSize: fontSize,
+    color: color,
+    fontWeight: fontWeight,
+    fontFamily: fontFamily ?? "Inter",
+    height: height,
+    letterSpacing: letterSpacing,
+    decoration: decoration,
+  );
+
+  /// Create a gradient text style (requires ShaderMask)
+  static TextStyle gradient({
+    double? fontSize,
+    FontWeight? fontWeight,
+    String? fontFamily,
+    double? height,
+    double? letterSpacing,
+  }) => TextStyle(
+    fontSize: fontSize,
+    fontWeight: fontWeight,
+    fontFamily: fontFamily ?? "Inter",
+    height: height,
+    letterSpacing: letterSpacing,
+    color: Colors.white, // This will be overridden by ShaderMask
+  );
+}
 
 const Color lightGrey = Color(0xEEEEEEFF);
 

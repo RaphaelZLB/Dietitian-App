@@ -1,4 +1,4 @@
-# diet_app
+# diet_app EatSmart
 
 A new Flutter project.
 

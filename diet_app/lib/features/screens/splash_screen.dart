@@ -50,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   void _navigateToHome() {
-    Future.delayed(const Duration(seconds: 34), () {
+    Future.delayed(const Duration(seconds: 3), () {
       if (mounted) {
         context.go('/home');
       }
@@ -82,7 +82,7 @@ class _SplashScreenState extends State<SplashScreen>
                   opacity: _fadeAnimation,
                   child: ScaleTransition(
                     scale: _scaleAnimation,
-                    child: Image.asset('assets/image/app_logo.png'),
+                    child: Image.asset('assets/images/app_logo.png'),
                   ),
                 );
               },

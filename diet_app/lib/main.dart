@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp.router(
           routerConfig: AppRouter.router,
-          title: 'Diet App',
+          title: 'EatSmart',
           theme: theme.light(),
           darkTheme: theme.dark(),
           debugShowCheckedModeBanner: false,
