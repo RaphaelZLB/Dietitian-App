@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-// For Spacing and Sizes use flutter_screenutil .w .h .r .sp
 class MaterialTheme {
   final TextTheme textTheme;
 
@@ -148,231 +147,230 @@ class MaterialTheme {
   );
 }
 
-/// Dynamic typography scale with responsive sizing
-class TypographyScale {
+// For Spacing and Sizes use flutter_screenutil .w .h .r .sp
+class Spacing {
+  static double get xxsWidth => 2.0.w;
+  static double get xsWidth => 4.0.w;
+  static double get sWidth => 8.0.w;
+  static double get mWidth => 12.0.w;
+  static double get lWidth => 16.0.w;
+  static double get xlWidth => 24.0.w;
+  static double get xxlWidth => 32.0.w;
+  static double get xxxlWidth => 40.0.w;
+  static double get xxxxlWidth => 48.0.w;
 
-  /// 45px - Large display text (responsive)
-  /// Usage: Section headers, feature titles, onboarding headlines
-  /// Widgets: Text, RichText, AutoSizeText, FittedBox
-  static double get displayMedium => 45.0.sp;
-  
-  /// 36px - Medium display text (responsive)
-  /// Usage: Card titles, modal headers, important announcements
-  /// Widgets: Text, RichText, ListTile.title, Card.title
-  static double get displaySmall => 36.0.sp;
-
-  // HEADLINE STYLES - For section headers and important text
-  /// 32px - Large headlines (responsive)
-  /// Usage: Page titles, major section headers, dashboard titles
-  /// Widgets: Text, AppBar.title, DrawerHeader, ExpansionTile.title
-  static double get headlineLarge => 32.0.sp;
-  
-  /// 28px - Medium headlines (responsive)
-  /// Usage: Subsection headers, feature titles, form section headers
-  /// Widgets: Text, ListTile.title, Card.title, ExpansionTile.title
-  static double get headlineMedium => 28.0.sp;
-  
-  /// 24px - Small headlines (responsive)
-  /// Usage: Card headers, list section titles, dialog titles
-  /// Widgets: Text, ListTile.title, Dialog.title, AlertDialog.title
-  static double get headlineSmall => 24.0.sp;
-
-  // TITLE STYLES - For content titles and labels
-  /// 22px - Large titles (responsive)
-  /// Usage: Article titles, profile names, important labels
-  /// Widgets: Text, ListTile.title, Card.title, Chip.label
-  static double get titleLarge => 22.0.sp;
-  
-  /// 16px - Medium titles (responsive)
-  /// Usage: Button text, navigation labels, form field labels
-  /// Widgets: Text, ElevatedButton.child, TextButton.child, BottomNavigationBarItem.label
-  static double get titleMedium => 16.0.sp;
-  
-  /// 14px - Small titles (responsive)
-  /// Usage: Tab labels, small buttons, secondary labels
-  /// Widgets: Text, Tab.label, Chip.label, Badge.label
-  static double get titleSmall => 14.0.sp;
-
-  // BODY STYLES - For main content text
-  /// 16px - Large body text (responsive)
-  /// Usage: Main content, descriptions, form input text
-  /// Widgets: Text, TextField.style, TextFormField.style, ListTile.subtitle
-  static double get bodyLarge => 16.0.sp;
-  
-  /// 14px - Medium body text (responsive)
-  /// Usage: Secondary content, captions, helper text
-  /// Widgets: Text, ListTile.subtitle, Card.content, ExpansionTile.children
-  static double get bodyMedium => 14.0.sp;
-  
-  /// 12px - Small body text (responsive)
-  /// Usage: Fine print, metadata, timestamps
-  /// Widgets: Text, ListTile.trailing, Card.actions, SnackBar.content
-  static double get bodySmall => 12.0.sp;
+  static double get xxsHeight => 2.0.h;
+  static double get xsHeight => 4.0.h;
+  static double get sHeight => 8.0.h;
+  static double get mHeight => 12.0.h;
+  static double get lHeight => 16.0.h;
+  static double get xlHeight => 24.0.h;
+  static double get xxlHeight => 32.0.h;
+  static double get xxxlHeight => 40.0.h;
+  static double get xxxxlHeight => 48.0.h;
 }
 
-/// App text styles with consistent typography
-// class AppTextStyles {
+/// Dynamic typography scale with responsive sizing
+class TypographyScale {
+  static double get displayLarge => 36.0.sp;
+  static double get displaySmall => 32.0.sp;
 
-//   /// Font family
-//   static const String _fontFamily = "Lato";
+  static double get headlineLarge => 28.0.sp;
+  static double get headlineSmall => 24.0.sp;
 
-//   /// Font Weight
-//   static const FontWeight light = FontWeight.w300;
-//   static const FontWeight regular = FontWeight.w400;
-//   static const FontWeight medium = FontWeight.w500;
-//   static const FontWeight semiBold = FontWeight.w600;
-//   static const FontWeight bold = FontWeight.w700;
-//   static const FontWeight extraBold = FontWeight.w800;
+  static double get titleLarge => 20.0.sp;
+  static double get titleSmall => 18.0.sp;
 
+  static double get subtitleLarge => 16.0.sp;
+  static double get subtitleSmall => 14.0.sp;
 
-//   /// Display style
-//   static TextStyle displayTextStyle({Color? color}) => TextStyle(
-//     fontSize: TypographyScale.displayMedium,
-//     fontFamily: _fontFamily,
-//     color: color,
-//     fontWeight: regular,
-//     height: 1.2,
-//   );
-//   static TextStyle displayBoldTextStyle({Color? color}) => TextStyle(
-//     fontSize: TypographyScale.displayMedium,
-//     fontFamily: _fontFamily,
-//     color: color,
-//     fontWeight: bold,
-//     height: 1.2,
-//   );
+  static double get bodyLarge => 12.0.sp; // this is the smallest to see
+  static double get bodySmall => 10.0.sp; // too small
 
-//   static TextStyle displaySmallTextStyle({Color? color}) => TextStyle(
-//     fontSize: TypographyScale.displaySmall,
-//     fontFamily: _fontFamily,
-//     color: color,
-//     fontWeight: regular,
-//     height: 1.2,
-//   );
-//   static TextStyle displayBoldSmallTextStyle({Color? color}) => TextStyle(
-//     fontSize: TypographyScale.displaySmall,
-//     fontFamily: _fontFamily,
-//     color: color,
-//     fontWeight: bold,
-//     height: 1.2,
-//   );
+  static double get label => 8.0.sp; // too samll
+}
 
-//   // Headline styles
-//   static TextStyle headlineLargeTextStyle({Color? color}) => TextStyle(
-//     fontSize: TypographyScale.headlineLarge,
-//     fontFamily: _fontFamily,
-//     color: color,
-//     fontWeight: regular,
-//     height: 1.3,
-//   );
-//   static TextStyle headlineBoldLargeTextStyle({Color? color}) => TextStyle(
-//     fontSize: TypographyScale.headlineLarge,
-//     fontFamily: _fontFamily,
-//     color: color,
-//     fontWeight: bold,
-//     height: 1.3,
-//   );
+/// Font family
+const String _fontFamily = "Lato";
 
-//   static TextStyle headlineMediumTextStyle({Color? color}) => TextStyle(
-//     fontSize: TypographyScale.headlineMedium,
-//     fontFamily: _fontFamily,
-//     color: color,
-//     fontWeight: fontWeight ?? FontWeights.semiBold,
-//     height: 1.3,
-//   );
+/// Font Weight
+const FontWeight light = FontWeight.w300;
+const FontWeight regular = FontWeight.w400;
+const FontWeight medium = FontWeight.w500;
+const FontWeight semiBold = FontWeight.w600;
+const FontWeight bold = FontWeight.w700;
+const FontWeight extraBold = FontWeight.w800;
 
-//   static TextStyle headlineSmall({Color? color, FontWeight? fontWeight}) => TextStyle(
-//     fontSize: TypographyScale.headlineSmall,
-//     fontFamily: _fontFamily,
-//     color: color,
-//     fontWeight: fontWeight ?? FontWeights.semiBold,
-//     height: 1.3,
-//   );
+// Display styles
+TextStyle displayLargeTextStyle({Color? color}) => TextStyle(
+  fontSize: TypographyScale.displayLarge,
+  fontFamily: _fontFamily,
+  color: color,
+  fontWeight: regular,
+  height: 1.2,
+);
+TextStyle displayLargeBoldTextStyle({Color? color}) => TextStyle(
+  fontSize: TypographyScale.displayLarge,
+  fontFamily: _fontFamily,
+  color: color,
+  fontWeight: bold,
+  height: 1.2,
+);
 
-//   // Title styles
-//   static TextStyle titleLarge({Color? color, FontWeight? fontWeight}) => TextStyle(
-//     fontSize: TypographyScale.titleLarge,
-//     fontFamily: _fontFamily,
-//     color: color,
-//     fontWeight: fontWeight ?? FontWeights.medium,
-//     height: 1.4,
-//   );
+TextStyle displaySmallTextStyle({Color? color}) => TextStyle(
+  fontSize: TypographyScale.displaySmall,
+  fontFamily: _fontFamily,
+  color: color,
+  fontWeight: regular,
+  height: 1.2,
+);
+TextStyle displaySmallBoldTextStyle({Color? color}) => TextStyle(
+  fontSize: TypographyScale.displaySmall,
+  fontFamily: _fontFamily,
+  color: color,
+  fontWeight: bold,
+  height: 1.2,
+);
 
-//   static TextStyle titleMedium({Color? color, FontWeight? fontWeight}) => TextStyle(
-//     fontSize: TypographyScale.titleMedium,
-//     fontFamily: _fontFamily,
-//     color: color,
-//     fontWeight: fontWeight ?? FontWeights.medium,
-//     height: 1.4,
-//   );
+// Headline styles
+TextStyle headlineLargeTextStyle({Color? color}) => TextStyle(
+  fontSize: TypographyScale.headlineLarge,
+  fontFamily: _fontFamily,
+  color: color,
+  fontWeight: regular,
+  height: 1.3,
+);
+TextStyle headlineLargeBoldTextStyle({Color? color}) => TextStyle(
+  fontSize: TypographyScale.headlineLarge,
+  fontFamily: _fontFamily,
+  color: color,
+  fontWeight: bold,
+  height: 1.3,
+);
 
-//   static TextStyle titleSmall({Color? color, FontWeight? fontWeight}) => TextStyle(
-//     fontSize: TypographyScale.titleSmall,
-//     fontFamily: _fontFamily,
-//     color: color,
-//     fontWeight: fontWeight ?? FontWeights.medium,
-//     height: 1.4,
-//   );
+TextStyle headlineSmallTextStyle({Color? color}) => TextStyle(
+  fontSize: TypographyScale.headlineSmall,
+  fontFamily: _fontFamily,
+  color: color,
+  fontWeight: regular,
+  height: 1.3,
+);
+TextStyle headlineSmallBoldTextStyle({Color? color}) => TextStyle(
+  fontSize: TypographyScale.headlineSmall,
+  fontFamily: _fontFamily,
+  color: color,
+  fontWeight: bold,
+  height: 1.3,
+);
 
-//   // Body styles
-//   static TextStyle bodyLarge({Color? color, FontWeight? fontWeight}) => TextStyle(
-//     fontSize: TypographyScale.bodyLarge,
-//     fontFamily: _fontFamily,
-//     color: color,
-//     fontWeight: fontWeight ?? FontWeights.regular,
-//     height: 1.5,
-//   );
+// Title styles
+TextStyle titleLargeTextStyle({Color? color}) => TextStyle(
+  fontSize: TypographyScale.titleLarge,
+  fontFamily: _fontFamily,
+  color: color,
+  fontWeight: regular,
+  height: 1.4,
+);
+TextStyle titleLargeBoldTextStyle({Color? color}) => TextStyle(
+  fontSize: TypographyScale.titleLarge,
+  fontFamily: _fontFamily,
+  color: color,
+  fontWeight: bold,
+  height: 1.4,
+);
 
-//   static TextStyle bodyMedium({Color? color, FontWeight? fontWeight}) => TextStyle(
-//     fontSize: TypographyScale.bodyMedium,
-//     fontFamily: _fontFamily,
-//     color: color,
-//     fontWeight: fontWeight ?? FontWeights.regular,
-//     height: 1.5,
-//   );
+TextStyle titleSmallTextStyle({Color? color}) => TextStyle(
+  fontSize: TypographyScale.titleSmall,
+  fontFamily: _fontFamily,
+  color: color,
+  fontWeight: regular,
+  height: 1.4,
+);
+TextStyle titleSmallBoldTextStyle({Color? color}) => TextStyle(
+  fontSize: TypographyScale.titleSmall,
+  fontFamily: _fontFamily,
+  color: color,
+  fontWeight: bold,
+  height: 1.4,
+);
 
-//   static TextStyle bodySmall({Color? color, FontWeight? fontWeight}) => TextStyle(
-//     fontSize: TypographyScale.bodySmall,
-//     fontFamily: _fontFamily,
-//     color: color,
-//     fontWeight: fontWeight ?? FontWeights.regular,
-//     height: 1.5,
-//   );
+// Subtitle styles
+TextStyle subtitleLargeTextStyle({Color? color}) => TextStyle(
+  fontSize: TypographyScale.subtitleLarge,
+  fontFamily: _fontFamily,
+  color: color,
+  fontWeight: regular,
+  height: 1.5,
+);
+TextStyle subtitleLargeBoldTextStyle({Color? color}) => TextStyle(
+  fontSize: TypographyScale.subtitleLarge,
+  fontFamily: _fontFamily,
+  color: color,
+  fontWeight: bold,
+  height: 1.5,
+);
 
-//   // Label styles
-//   static TextStyle labelLarge({Color? color, FontWeight? fontWeight}) => TextStyle(
-//     fontSize: TypographyScale.labelLarge,
-//     fontFamily: _fontFamily,
-//     color: color,
-//     fontWeight: fontWeight ?? FontWeights.medium,
-//     height: 1.4,
-//   );
+TextStyle subtitleSmallTextStyle({Color? color}) => TextStyle(
+  fontSize: TypographyScale.subtitleSmall,
+  fontFamily: _fontFamily,
+  color: color,
+  fontWeight: regular,
+  height: 1.5,
+);
+TextStyle subtitleSmallBoldTextStyle({Color? color}) => TextStyle(
+  fontSize: TypographyScale.subtitleSmall,
+  fontFamily: _fontFamily,
+  color: color,
+  fontWeight: bold,
+  height: 1.5,
+);
 
-//   static TextStyle labelMedium({Color? color, FontWeight? fontWeight}) => TextStyle(
-//     fontSize: TypographyScale.labelMedium,
-//     fontFamily: _fontFamily,
-//     color: color,
-//     fontWeight: fontWeight ?? FontWeights.medium,
-//     height: 1.4,
-//   );
+// Body styles
+TextStyle bodyLargeTextStyle({Color? color}) => TextStyle(
+  fontSize: TypographyScale.bodyLarge,
+  fontFamily: _fontFamily,
+  color: color,
+  fontWeight: regular,
+  height: 1.5,
+);
+TextStyle bodyLargeBoldTextStyle({Color? color}) => TextStyle(
+  fontSize: TypographyScale.bodyLarge,
+  fontFamily: _fontFamily,
+  color: color,
+  fontWeight: bold,
+  height: 1.5,
+);
 
-//   static TextStyle labelSmall({Color? color, FontWeight? fontWeight}) => TextStyle(
-//     fontSize: TypographyScale.labelSmall,
-//     fontFamily: _fontFamily,
-//     color: color,
-//     fontWeight: fontWeight ?? FontWeights.medium,
-//     height: 1.4,
-//   );
+TextStyle bodySmallTextStyle({Color? color}) => TextStyle(
+  fontSize: TypographyScale.bodySmall,
+  fontFamily: _fontFamily,
+  color: color,
+  fontWeight: regular,
+  height: 1.5,
+);
+TextStyle bodySmallBoldTextStyle({Color? color}) => TextStyle(
+  fontSize: TypographyScale.bodySmall,
+  fontFamily: _fontFamily,
+  color: color,
+  fontWeight: bold,
+  height: 1.5,
+);
 
-//   // Legacy compatibility methods
-//   static TextStyle headlineTextStyle(Color color) => headlineLarge(color: color);
-//   static TextStyle headlineBoldTextStyle(Color color) => headlineLarge(color: color, fontWeight: FontWeights.bold);
-//   static TextStyle titleTextStyle(Color color) => titleMedium(color: color);
-//   static TextStyle titleBoldTextStyle(Color color) => titleMedium(color: color, fontWeight: FontWeights.bold);
-//   static TextStyle subTitleTextStyle(Color color) => bodyMedium(color: color);
-//   static TextStyle subTitleBoldTextStyle(Color color) => bodyMedium(color: color, fontWeight: FontWeights.bold);
-//   static TextStyle labelTextStyle(Color color) => labelMedium(color: color);
-//   static TextStyle labelBoldTextStyle(Color color) => labelMedium(color: color, fontWeight: FontWeights.bold);
-// }
+// Label styles
+TextStyle labelTextStyle({Color? color}) => TextStyle(
+  fontSize: TypographyScale.label,
+  fontFamily: _fontFamily,
+  color: color,
+  fontWeight: regular,
+  height: 1.6,
+);
+TextStyle labelBoldTextStyle({Color? color}) => TextStyle(
+  fontSize: TypographyScale.label,
+  fontFamily: _fontFamily,
+  color: color,
+  fontWeight: bold,
+  height: 1.6,
+);
 
 /// Utility class for common text style patterns
 class TextStyleUtils {
@@ -389,7 +387,7 @@ class TextStyleUtils {
     fontSize: fontSize,
     color: color,
     fontWeight: fontWeight,
-    fontFamily: fontFamily ?? "Inter",
+    fontFamily: fontFamily ?? "Lato",
     height: height,
     letterSpacing: letterSpacing,
     decoration: decoration,
@@ -405,15 +403,15 @@ class TextStyleUtils {
   }) => TextStyle(
     fontSize: fontSize,
     fontWeight: fontWeight,
-    fontFamily: fontFamily ?? "Inter",
+    fontFamily: fontFamily ?? "Lato",
     height: height,
     letterSpacing: letterSpacing,
     color: Colors.white, // This will be overridden by ShaderMask
   );
 }
 
-const Color lightGrey = Color(0xEEEEEEFF);
+const Color appThemeLightGrey = Color(0xEEEEEEFF);
 
-const Color greyCol = Color(0xf593959c);
+const Color appThemeGreyCol = Color(0xf593959c);
 
-const Color inversePrimary = Color(0xff97a8c5);
+const Color appThemeInversePrimary = Color(0xff97a8c5);

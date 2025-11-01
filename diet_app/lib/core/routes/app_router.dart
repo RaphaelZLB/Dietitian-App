@@ -1,7 +1,8 @@
+import 'package:diet_app/features/home/presentation/screens/add_client_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/screens/splash_screen.dart';
-import '../widgets/main_navigation.dart';
+import '../../features/app/widgets/main_navigation.dart';
 
 /// Application routing configuration using GoRouter.
 ///
@@ -12,20 +13,22 @@ import '../widgets/main_navigation.dart';
 /// For navigating use: GoRouter.of(context).push('/home');????
 class AppRouter {
   AppRouter._();
-
-  static final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
-
-  static GlobalKey<NavigatorState> get navigatorKey => _navigatorKey;
+  static final _rootNavigatorKey = GlobalKey<NavigatorState>();
+  // final _homeNavigatorKey = GlobalKey<NavigatorState>();
+  // final _clientsNavigatorKey = GlobalKey<NavigatorState>();
+  // final _scheduleNavigatorKey = GlobalKey<NavigatorState>();
 
   static final GoRouter router = GoRouter(
-    navigatorKey: _navigatorKey,
+    navigatorKey: _rootNavigatorKey,
     initialLocation: '/splash',
     routes: [
+      // Non-shell routes
       GoRoute(
         path: '/splash',
         name: 'splash',
         builder: (context, state) => const SplashScreen(),
       ),
+      // Shell routes
       ShellRoute(
         builder: (context, state, child) => MainNavigation(child: child),
         routes: [
@@ -33,30 +36,32 @@ class AppRouter {
             path: '/home',
             name: 'home',
             builder: (context, state) => const HomeTab(),
+            routes: [],
           ),
           GoRoute(
             path: '/clients',
             name: 'clients',
             builder: (context, state) => const ClientsTab(),
+            routes: [],
           ),
           GoRoute(
             path: '/schedule',
             name: 'schedule',
             builder: (context, state) => const ScheduleTab(),
+            routes: [],
           ),
         ],
       ),
       // Add more routes here as needed
-      // GoRoute(
-      //   path: '/profile',
-      //   name: 'profile',
-      //   builder: (context, state) => const ProfilePage(),
-      // ),
+      GoRoute(
+        path: '/add-client',
+        name: 'add-client',
+        builder: (context, state) => const AddClientScreen(),
+      ),
     ],
     errorBuilder: (context, state) => const ErrorPage(),
   );
 }
-
 
 /// Error page for invalid routes
 class ErrorPage extends StatelessWidget {
@@ -65,18 +70,12 @@ class ErrorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Page Not Found'),
-      ),
+      appBar: AppBar(title: const Text('Page Not Found')),
       body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.error_outline,
-              size: 64,
-              color: Colors.red,
-            ),
+            Icon(Icons.error_outline, size: 64, color: Colors.red),
             SizedBox(height: 16),
             Text(
               'Page Not Found',

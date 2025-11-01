@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../features/screens/home_screen.dart';
-import '../../features/screens/clients_screen.dart';
-import '../../features/screens/schedule_screen.dart';
+import '../../home/presentation/screens/home_screen.dart';
+import '../../screens/clients_screen.dart';
+import '../../screens/schedule_screen.dart';
 
 /// Main navigation shell with bottom navigation bar.
 /// 
@@ -34,7 +34,7 @@ class _MainNavigationState extends State<MainNavigation> {
           color: colors.surface,
           border: Border(
             top: BorderSide(
-              color: colors.outline.withOpacity(0.2),
+              color: colors.outline.withValues(alpha: 0.2),
               width: 1,
             ),
           ),
@@ -108,7 +108,7 @@ class _NavItem extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
           color: isActive 
-              ? colors.primary.withOpacity(0.1)
+              ? colors.primary.withValues(alpha: 0.1)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
         ),
@@ -117,7 +117,7 @@ class _NavItem extends StatelessWidget {
           children: [
             Icon(
               isActive ? activeIcon : icon,
-              color: isActive ? colors.primary : colors.onSurface.withOpacity(0.6),
+              color: isActive ? colors.primary : colors.onSurface.withValues(alpha: 0.6),
               size: 24,
             ),
             const SizedBox(height: 4),
@@ -126,7 +126,7 @@ class _NavItem extends StatelessWidget {
               style: theme.textTheme.bodySmall?.copyWith(
                 color: isActive 
                     ? colors.primary 
-                    : colors.onSurface.withOpacity(0.6),
+                    : colors.onSurface.withValues(alpha: 0.6),
                 fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
               ),
             ),
