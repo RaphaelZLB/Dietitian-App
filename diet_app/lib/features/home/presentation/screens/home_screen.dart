@@ -1,4 +1,5 @@
 import 'package:diet_app/core/app/app_theme.dart';
+import 'package:diet_app/features/home/presentation/screens/ibw_bmi_bmr_tee.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
@@ -43,9 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
             label: 'Add Client',
             labelStyle: bodySmallTextStyle(color: theme.colorScheme.onPrimary),
             onTap: () {
-
-              // TODO: Navigate to log meal screen
-              debugPrint('Log Meal tapped');
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const FormulasCalculator()));
             },
           ),
           SpeedDialChild(

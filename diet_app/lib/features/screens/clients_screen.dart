@@ -1,3 +1,4 @@
+import 'package:diet_app/features/home/presentation/screens/ibw_bmi_bmr_tee.dart';
 import 'package:flutter/material.dart';
 
 /// Clients screen for managing dietitian's clients.
@@ -20,7 +21,7 @@ class ClientsScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.person_add),
             onPressed: () {
-              // TODO: Add new client functionality
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const FormulasCalculator()));
             },
           ),
         ],

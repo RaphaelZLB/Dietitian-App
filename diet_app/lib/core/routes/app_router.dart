@@ -1,4 +1,5 @@
 import 'package:diet_app/features/home/presentation/screens/add_client_screen.dart';
+import 'package:diet_app/features/home/presentation/screens/ibw_bmi_bmr_tee.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/screens/splash_screen.dart';
@@ -36,7 +37,13 @@ class AppRouter {
             path: '/home',
             name: 'home',
             builder: (context, state) => const HomeTab(),
-            routes: [],
+            routes: [
+              GoRoute(
+                path: '/formulas-calculator',
+                name: 'formulas-calculator',
+                builder: (context, state) => const FormulasCalculator(),
+              ),
+            ],
           ),
           GoRoute(
             path: '/clients',
