@@ -1,4 +1,4 @@
-import 'package:diet_app/features/home/presentation/screens/add_client_screen.dart';
+import 'package:diet_app/features/home/presentation/screens/ibw_bmi_bmr_tee.dart';
 import 'package:flutter/material.dart';
 
 /// Clients screen for managing dietitian's clients.
@@ -20,23 +20,8 @@ class ClientsScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.person_add),
-            onPressed: () async {
-              final result = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const AddClientScreen(),
-                ),
-              );
-              // Refresh the clients list if a new client was added
-              if (result == true) {
-                // TODO: Refresh the clients list when client storage is integrated with UI
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Client added successfully!'),
-                    duration: Duration(seconds: 1),
-                  ),
-                );
-              }
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const FormulasCalculator()));
             },
           ),
         ],
