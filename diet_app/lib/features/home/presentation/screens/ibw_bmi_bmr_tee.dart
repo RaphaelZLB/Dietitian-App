@@ -60,33 +60,70 @@ class _FormulasCalculatorState extends State<FormulasCalculator> {
     super.dispose();
   }
 
-  void _saveData() {
-    // Validate all fields
+  void _calculate() {
+    // Validate all required fields
     if (!_formKey.currentState!.validate()) {
       return;
     }
 
-    // Save gender to controller
-    _genderController.text = _selectedGender!;
-    
-    // Save activity level to controller
-    _activityLevelController.text = _selectedActivityLevel!;
-    
-    // Save goal to controller
-    _goalController.text = _selectedGoal!;
-    
-    // Save diet type to controller
-    _dietTypeController.text = _selectedDietType!;
+    if (_selectedGender == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please select a gender'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
 
-    // Show confirmation
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Information saved successfully!'),
-        backgroundColor: Colors.green,
-        duration: Duration(seconds: 2),
+    if (_selectedActivityLevel == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please select an activity level'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    if (_selectedGoal == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please select a goal'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    // Save to controllers
+    _genderController.text = _selectedGender!;
+    _activityLevelController.text = _selectedActivityLevel!;
+    _goalController.text = _selectedGoal!;
+    if (_selectedDietType != null) {
+      _dietTypeController.text = _selectedDietType!;
+    }
+
+    // Navigate to result page with data
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FormulasCalculatorResult(
+          height: double.parse(_heightController.text),
+          weight: double.parse(_weightController.text),
+          age: int.parse(_ageController.text),
+          gender: _selectedGender!,
+          activityLevel: _selectedActivityLevel!,
+          goal: _selectedGoal!,
+          dietType: _selectedDietType,
+          dietPlanComments: _dietPlanController.text,
+        ),
       ),
     );
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const FormulasCalculatorResult()));
+  }
+
+  void _cancel() {
+    Navigator.pop(context);
   }
 
   @override
@@ -290,17 +327,37 @@ class _FormulasCalculatorState extends State<FormulasCalculator> {
               ),
               const SizedBox(height: 24),
 
-              // Save button
-              ElevatedButton(
-                onPressed: _saveData,
-                style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.primary,
-                foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                ),
-                child: const Text(
-                  'Save Information',
-                  style: TextStyle(fontSize: 16),
-                ),
+              // Calculate and Cancel buttons
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: _cancel,
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      child: const Text(
+                        'Cancel',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _calculate,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      child: const Text(
+                        'Calculate',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

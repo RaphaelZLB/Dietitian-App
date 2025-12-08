@@ -3,6 +3,8 @@ import 'package:diet_app/features/home/presentation/screens/ibw_bmi_bmr_tee.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
+import 'add_client_screen.dart';
+
 
 /// Home screen for the diet app.
 /// 
@@ -38,11 +40,27 @@ class _HomeScreenState extends State<HomeScreen> {
         animationCurve: Curves.elasticInOut,
         children: [
           SpeedDialChild(
-            child: Icon(Icons.person, color: theme.colorScheme.onPrimary),
+            child: Icon(Icons.person_add_alt_1, color: theme.colorScheme.onPrimary),
             backgroundColor: theme.colorScheme.primary,
             foregroundColor: Colors.white,
             label: 'Add Client',
-            labelStyle: bodySmallTextStyle(color: theme.colorScheme.onPrimary),
+            labelStyle: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurface,
+              fontWeight: FontWeight.w500,
+            ),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const AddClientScreen()));
+            },
+          ),
+          SpeedDialChild(
+            child: Icon(Icons.calculate_outlined, color: theme.colorScheme.onPrimary),
+            backgroundColor: theme.colorScheme.primary,
+            foregroundColor: Colors.white,
+            label: 'Calculator',
+            labelStyle: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurface,
+              fontWeight: FontWeight.w500,
+            ),
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) => const FormulasCalculator()));
             },
