@@ -1,35 +1,29 @@
-import 'package:diet_app/features/home/data/models/client_model.dart';
-import 'package:diet_app/features/home/data/services/client_storage_service.dart';
+import 'package:diet_app/features/home/presentation/screens/formulas_calculator_result.dart';
 import 'package:flutter/material.dart';
 
-class AddClientScreen extends StatefulWidget {
-  const AddClientScreen({super.key});
+class FormulasCalculator extends StatefulWidget {
+  const FormulasCalculator({super.key});
 
   @override
-  State<AddClientScreen> createState() => _AddClientScreenState();
+  State<FormulasCalculator> createState() => _FormulasCalculatorState();
 }
 
-class _AddClientScreenState extends State<AddClientScreen> {
+class _FormulasCalculatorState extends State<FormulasCalculator> {
   final _formKey = GlobalKey<FormState>();
-  final _storageService = ClientStorageService();
-  bool _isLoading = false;
-
-  // Controllers
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _heightController = TextEditingController();
   final TextEditingController _weightController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
+  final TextEditingController _genderController = TextEditingController();
+  final TextEditingController _activityLevelController = TextEditingController();
+  final TextEditingController _goalController = TextEditingController();
+  final TextEditingController _dietTypeController = TextEditingController();
   final TextEditingController _dietPlanController = TextEditingController();
 
-  // Dropdown selections
   String? _selectedGender;
   String? _selectedActivityLevel;
   String? _selectedGoal;
   String? _selectedDietType;
 
-  // Options
   final List<String> _genders = ['Male', 'Female'];
   final List<String> _activityLevels = [
     'Inactive',
@@ -55,23 +49,23 @@ class _AddClientScreenState extends State<AddClientScreen> {
 
   @override
   void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
-    _phoneController.dispose();
     _heightController.dispose();
     _weightController.dispose();
     _ageController.dispose();
+    _genderController.dispose();
+    _activityLevelController.dispose();
+    _goalController.dispose();
+    _dietTypeController.dispose();
     _dietPlanController.dispose();
     super.dispose();
   }
 
-  Future<void> _saveClient() async {
-    // Validate form
+  void _calculate() {
+    // Validate all required fields
     if (!_formKey.currentState!.validate()) {
       return;
     }
 
-    // Validate dropdowns
     if (_selectedGender == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -102,77 +96,30 @@ class _AddClientScreenState extends State<AddClientScreen> {
       return;
     }
 
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      // Create client model
-      final client = ClientModel(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        name: _nameController.text.trim(),
-        email: _emailController.text.trim(),
-        phone: _phoneController.text.trim().isEmpty
-            ? null
-            : _phoneController.text.trim(),
-        height: double.parse(_heightController.text),
-        weight: double.parse(_weightController.text),
-        age: int.parse(_ageController.text),
-        gender: _selectedGender!,
-        activityLevel: _selectedActivityLevel!,
-        goal: _selectedGoal!,
-        dietType: _selectedDietType,
-        dietPlanComments: _dietPlanController.text.trim().isEmpty
-            ? null
-            : _dietPlanController.text.trim(),
-        createdAt: DateTime.now(),
-      );
-
-      // Save client
-      final success = await _storageService.saveClient(client);
-
-      if (success) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Client saved successfully!'),
-              backgroundColor: Colors.green,
-              duration: Duration(seconds: 2),
-            ),
-          );
-          // Navigate back after a short delay
-          Future.delayed(const Duration(milliseconds: 500), () {
-            if (mounted) {
-              Navigator.pop(context, true); // Return true to indicate success
-            }
-          });
-        }
-      } else {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Failed to save client. Please try again.'),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: ${e.toString()}'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
+    // Save to controllers
+    _genderController.text = _selectedGender!;
+    _activityLevelController.text = _selectedActivityLevel!;
+    _goalController.text = _selectedGoal!;
+    if (_selectedDietType != null) {
+      _dietTypeController.text = _selectedDietType!;
     }
+
+    // Navigate to result page with data
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FormulasCalculatorResult(
+          height: double.parse(_heightController.text),
+          weight: double.parse(_weightController.text),
+          age: int.parse(_ageController.text),
+          gender: _selectedGender!,
+          activityLevel: _selectedActivityLevel!,
+          goal: _selectedGoal!,
+          dietType: _selectedDietType,
+          dietPlanComments: _dietPlanController.text,
+        ),
+      ),
+    );
   }
 
   void _cancel() {
@@ -185,7 +132,7 @@ class _AddClientScreenState extends State<AddClientScreen> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
-        title: const Text('Add New Client'),
+        title: const Text('Client Information'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -194,83 +141,12 @@ class _AddClientScreenState extends State<AddClientScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Section Header
-              Text(
-                'Personal Information',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-              ),
-              const SizedBox(height: 16),
-
-              // Name input
-              TextFormField(
-                controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Full Name *',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.person),
-                ),
-                textCapitalization: TextCapitalization.words,
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Name is required';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-
-              // Email input
-              TextFormField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  labelText: 'Email *',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.email),
-                ),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Email is required';
-                  }
-                  if (!value.contains('@') || !value.contains('.')) {
-                    return 'Please enter a valid email';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-
-              // Phone input
-              TextFormField(
-                controller: _phoneController,
-                keyboardType: TextInputType.phone,
-                decoration: const InputDecoration(
-                  labelText: 'Phone Number',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.phone),
-                ),
-              ),
-              const SizedBox(height: 24),
-
-              // Section Header
-              Text(
-                'Health Information',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-              ),
-              const SizedBox(height: 16),
-
               // Height input
               TextFormField(
                 controller: _heightController,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
-                  labelText: 'Height (cm) *',
+                  labelText: 'Height (cm)',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.height),
                 ),
@@ -278,9 +154,8 @@ class _AddClientScreenState extends State<AddClientScreen> {
                   if (value == null || value.trim().isEmpty) {
                     return 'Height is required';
                   }
-                  final height = double.tryParse(value);
-                  if (height == null || height <= 0 || height > 300) {
-                    return 'Please enter a valid height (1-300 cm)';
+                  if (double.tryParse(value) == null) {
+                    return 'Please enter a valid number';
                   }
                   return null;
                 },
@@ -292,7 +167,7 @@ class _AddClientScreenState extends State<AddClientScreen> {
                 controller: _weightController,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
-                  labelText: 'Weight (kg) *',
+                  labelText: 'Weight (kg)',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.monitor_weight),
                 ),
@@ -300,9 +175,8 @@ class _AddClientScreenState extends State<AddClientScreen> {
                   if (value == null || value.trim().isEmpty) {
                     return 'Weight is required';
                   }
-                  final weight = double.tryParse(value);
-                  if (weight == null || weight <= 0 || weight > 500) {
-                    return 'Please enter a valid weight (1-500 kg)';
+                  if (double.tryParse(value) == null) {
+                    return 'Please enter a valid number';
                   }
                   return null;
                 },
@@ -314,7 +188,7 @@ class _AddClientScreenState extends State<AddClientScreen> {
                 controller: _ageController,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
-                  labelText: 'Age *',
+                  labelText: 'Age',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.calendar_today),
                 ),
@@ -322,9 +196,12 @@ class _AddClientScreenState extends State<AddClientScreen> {
                   if (value == null || value.trim().isEmpty) {
                     return 'Age is required';
                   }
-                  final age = int.tryParse(value);
-                  if (age == null || age < 1 || age > 150) {
-                    return 'Please enter a valid age (1-150)';
+                  if (int.tryParse(value) == null) {
+                    return 'Please enter a valid number';
+                  }
+                  final age = int.parse(value);
+                  if (age < 1 || age > 150) {
+                    return 'Please enter a valid age';
                   }
                   return null;
                 },
@@ -333,11 +210,11 @@ class _AddClientScreenState extends State<AddClientScreen> {
 
               // Gender dropdown
               DropdownButtonFormField<String>(
-                value: _selectedGender,
+                initialValue: _selectedGender,
                 decoration: const InputDecoration(
-                  labelText: 'Gender *',
+                  labelText: 'Gender',
                   border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.person_outline),
+                  prefixIcon: Icon(Icons.person),
                 ),
                 items: _genders.map((String gender) {
                   return DropdownMenuItem<String>(
@@ -361,9 +238,9 @@ class _AddClientScreenState extends State<AddClientScreen> {
 
               // Activity Level dropdown
               DropdownButtonFormField<String>(
-                value: _selectedActivityLevel,
+                initialValue: _selectedActivityLevel,
                 decoration: const InputDecoration(
-                  labelText: 'Activity Level *',
+                  labelText: 'Activity Level',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.fitness_center),
                 ),
@@ -389,9 +266,9 @@ class _AddClientScreenState extends State<AddClientScreen> {
 
               // Goal dropdown
               DropdownButtonFormField<String>(
-                value: _selectedGoal,
+                initialValue: _selectedGoal,
                 decoration: const InputDecoration(
-                  labelText: 'Goal *',
+                  labelText: 'Goal',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.flag),
                 ),
@@ -417,7 +294,7 @@ class _AddClientScreenState extends State<AddClientScreen> {
 
               // Diet Type dropdown
               DropdownButtonFormField<String>(
-                value: _selectedDietType,
+                initialValue: _selectedDietType,
                 decoration: const InputDecoration(
                   labelText: 'Diet Type',
                   border: OutlineInputBorder(),
@@ -437,7 +314,7 @@ class _AddClientScreenState extends State<AddClientScreen> {
               ),
               const SizedBox(height: 16),
 
-              // Diet Plan Comments input
+              // Diet Plan input
               TextFormField(
                 controller: _dietPlanController,
                 maxLines: 3,
@@ -448,14 +325,14 @@ class _AddClientScreenState extends State<AddClientScreen> {
                   alignLabelWithHint: true,
                 ),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 24),
 
-              // Cancel and Save buttons
+              // Calculate and Cancel buttons
               Row(
                 children: [
                   Expanded(
                     child: OutlinedButton(
-                      onPressed: _isLoading ? null : _cancel,
+                      onPressed: _cancel,
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
                       ),
@@ -468,26 +345,16 @@ class _AddClientScreenState extends State<AddClientScreen> {
                   const SizedBox(width: 16),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: _isLoading ? null : _saveClient,
+                      onPressed: _calculate,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).colorScheme.primary,
                         foregroundColor: Theme.of(context).colorScheme.onPrimary,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                       ),
-                      child: _isLoading
-                          ? const SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                valueColor:
-                                    AlwaysStoppedAnimation<Color>(Colors.white),
-                              ),
-                            )
-                          : const Text(
-                              'Save Client',
-                              style: TextStyle(fontSize: 16),
-                            ),
+                      child: const Text(
+                        'Calculate',
+                        style: TextStyle(fontSize: 16),
+                      ),
                     ),
                   ),
                 ],

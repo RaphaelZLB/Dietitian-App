@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MaterialTheme {
   final TextTheme textTheme;
@@ -148,46 +147,16 @@ class MaterialTheme {
 }
 
 // For Spacing and Sizes use flutter_screenutil .w .h .r .sp
-class Spacing {
-  static double get xxsWidth => 2.0.w;
-  static double get xsWidth => 4.0.w;
-  static double get sWidth => 8.0.w;
-  static double get mWidth => 12.0.w;
-  static double get lWidth => 16.0.w;
-  static double get xlWidth => 24.0.w;
-  static double get xxlWidth => 32.0.w;
-  static double get xxxlWidth => 40.0.w;
-  static double get xxxxlWidth => 48.0.w;
-
-  static double get xxsHeight => 2.0.h;
-  static double get xsHeight => 4.0.h;
-  static double get sHeight => 8.0.h;
-  static double get mHeight => 12.0.h;
-  static double get lHeight => 16.0.h;
-  static double get xlHeight => 24.0.h;
-  static double get xxlHeight => 32.0.h;
-  static double get xxxlHeight => 40.0.h;
-  static double get xxxxlHeight => 48.0.h;
-}
-
-/// Dynamic typography scale with responsive sizing
-class TypographyScale {
-  static double get displayLarge => 36.0.sp;
-  static double get displaySmall => 32.0.sp;
-
-  static double get headlineLarge => 28.0.sp;
-  static double get headlineSmall => 24.0.sp;
-
-  static double get titleLarge => 20.0.sp;
-  static double get titleSmall => 18.0.sp;
-
-  static double get subtitleLarge => 16.0.sp;
-  static double get subtitleSmall => 14.0.sp;
-
-  static double get bodyLarge => 12.0.sp; // this is the smallest to see
-  static double get bodySmall => 10.0.sp; // too small
-
-  static double get label => 8.0.sp; // too samll
+class Pixels {
+  static double get xxs => 2.0;
+  static double get xs => 4.0;
+  static double get s => 8.0;
+  static double get m => 12.0;
+  static double get l => 16.0;
+  static double get xl => 24.0;
+  static double get twoxl => 32.0;
+  static double get threexl => 40.0;
+  static double get fourxl => 48.0;
 }
 
 /// Font family
@@ -201,155 +170,75 @@ const FontWeight semiBold = FontWeight.w600;
 const FontWeight bold = FontWeight.w700;
 const FontWeight extraBold = FontWeight.w800;
 
-// Display styles
-TextStyle displayLargeTextStyle({Color? color}) => TextStyle(
-  fontSize: TypographyScale.displayLarge,
+TextStyle displayTextStyle({Color? color}) => TextStyle(
+  fontSize: Pixels.threexl,
   fontFamily: _fontFamily,
   color: color,
   fontWeight: regular,
   height: 1.2,
 );
-TextStyle displayLargeBoldTextStyle({Color? color}) => TextStyle(
-  fontSize: TypographyScale.displayLarge,
-  fontFamily: _fontFamily,
-  color: color,
-  fontWeight: bold,
-  height: 1.2,
-);
-
-TextStyle displaySmallTextStyle({Color? color}) => TextStyle(
-  fontSize: TypographyScale.displaySmall,
-  fontFamily: _fontFamily,
-  color: color,
-  fontWeight: regular,
-  height: 1.2,
-);
-TextStyle displaySmallBoldTextStyle({Color? color}) => TextStyle(
-  fontSize: TypographyScale.displaySmall,
+TextStyle displayBoldTextStyle({Color? color}) => TextStyle(
+  fontSize: Pixels.threexl,
   fontFamily: _fontFamily,
   color: color,
   fontWeight: bold,
   height: 1.2,
 );
 
-// Headline styles
-TextStyle headlineLargeTextStyle({Color? color}) => TextStyle(
-  fontSize: TypographyScale.headlineLarge,
+TextStyle headlineTextStyle({Color? color}) => TextStyle(
+  fontSize: Pixels.twoxl,
   fontFamily: _fontFamily,
   color: color,
   fontWeight: regular,
   height: 1.3,
 );
-TextStyle headlineLargeBoldTextStyle({Color? color}) => TextStyle(
-  fontSize: TypographyScale.headlineLarge,
-  fontFamily: _fontFamily,
-  color: color,
-  fontWeight: bold,
-  height: 1.3,
-);
-
-TextStyle headlineSmallTextStyle({Color? color}) => TextStyle(
-  fontSize: TypographyScale.headlineSmall,
-  fontFamily: _fontFamily,
-  color: color,
-  fontWeight: regular,
-  height: 1.3,
-);
-TextStyle headlineSmallBoldTextStyle({Color? color}) => TextStyle(
-  fontSize: TypographyScale.headlineSmall,
+TextStyle headlineBoldTextStyle({Color? color}) => TextStyle(
+  fontSize: Pixels.twoxl,
   fontFamily: _fontFamily,
   color: color,
   fontWeight: bold,
   height: 1.3,
 );
 
-// Title styles
-TextStyle titleLargeTextStyle({Color? color}) => TextStyle(
-  fontSize: TypographyScale.titleLarge,
+TextStyle titleTextStyle({Color? color}) => TextStyle(
+  fontSize: Pixels.xl,
   fontFamily: _fontFamily,
   color: color,
   fontWeight: regular,
   height: 1.4,
 );
-TextStyle titleLargeBoldTextStyle({Color? color}) => TextStyle(
-  fontSize: TypographyScale.titleLarge,
-  fontFamily: _fontFamily,
-  color: color,
-  fontWeight: bold,
-  height: 1.4,
-);
-
-TextStyle titleSmallTextStyle({Color? color}) => TextStyle(
-  fontSize: TypographyScale.titleSmall,
-  fontFamily: _fontFamily,
-  color: color,
-  fontWeight: regular,
-  height: 1.4,
-);
-TextStyle titleSmallBoldTextStyle({Color? color}) => TextStyle(
-  fontSize: TypographyScale.titleSmall,
+TextStyle titleBoldTextStyle({Color? color}) => TextStyle(
+  fontSize: Pixels.xl,
   fontFamily: _fontFamily,
   color: color,
   fontWeight: bold,
   height: 1.4,
 );
 
-// Subtitle styles
-TextStyle subtitleLargeTextStyle({Color? color}) => TextStyle(
-  fontSize: TypographyScale.subtitleLarge,
+TextStyle subtitleTextStyle({Color? color}) => TextStyle(
+  fontSize: Pixels.l,
   fontFamily: _fontFamily,
   color: color,
   fontWeight: regular,
   height: 1.5,
 );
-TextStyle subtitleLargeBoldTextStyle({Color? color}) => TextStyle(
-  fontSize: TypographyScale.subtitleLarge,
+TextStyle subtitleBoldTextStyle({Color? color}) => TextStyle(
+  fontSize: Pixels.l,
   fontFamily: _fontFamily,
   color: color,
   fontWeight: bold,
   height: 1.5,
 );
 
-TextStyle subtitleSmallTextStyle({Color? color}) => TextStyle(
-  fontSize: TypographyScale.subtitleSmall,
+TextStyle bodyTextStyle({Color? color}) => TextStyle(
+  fontSize: Pixels.m,
   fontFamily: _fontFamily,
   color: color,
   fontWeight: regular,
   height: 1.5,
 );
-TextStyle subtitleSmallBoldTextStyle({Color? color}) => TextStyle(
-  fontSize: TypographyScale.subtitleSmall,
-  fontFamily: _fontFamily,
-  color: color,
-  fontWeight: bold,
-  height: 1.5,
-);
-
-// Body styles
-TextStyle bodyLargeTextStyle({Color? color}) => TextStyle(
-  fontSize: TypographyScale.bodyLarge,
-  fontFamily: _fontFamily,
-  color: color,
-  fontWeight: regular,
-  height: 1.5,
-);
-TextStyle bodyLargeBoldTextStyle({Color? color}) => TextStyle(
-  fontSize: TypographyScale.bodyLarge,
-  fontFamily: _fontFamily,
-  color: color,
-  fontWeight: bold,
-  height: 1.5,
-);
-
-TextStyle bodySmallTextStyle({Color? color}) => TextStyle(
-  fontSize: TypographyScale.bodySmall,
-  fontFamily: _fontFamily,
-  color: color,
-  fontWeight: regular,
-  height: 1.5,
-);
-TextStyle bodySmallBoldTextStyle({Color? color}) => TextStyle(
-  fontSize: TypographyScale.bodySmall,
+TextStyle bodyBoldTextStyle({Color? color}) => TextStyle(
+  fontSize: Pixels.m,
   fontFamily: _fontFamily,
   color: color,
   fontWeight: bold,
@@ -358,14 +247,14 @@ TextStyle bodySmallBoldTextStyle({Color? color}) => TextStyle(
 
 // Label styles
 TextStyle labelTextStyle({Color? color}) => TextStyle(
-  fontSize: TypographyScale.label,
+  fontSize: Pixels.s,
   fontFamily: _fontFamily,
   color: color,
   fontWeight: regular,
   height: 1.6,
 );
 TextStyle labelBoldTextStyle({Color? color}) => TextStyle(
-  fontSize: TypographyScale.label,
+  fontSize: Pixels.s,
   fontFamily: _fontFamily,
   color: color,
   fontWeight: bold,

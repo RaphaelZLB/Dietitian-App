@@ -2,7 +2,6 @@ import 'package:diet_app/features/home/presentation/screens/add_client_screen.da
 import 'package:diet_app/features/home/presentation/screens/ibw_bmi_bmr_tee.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../features/screens/splash_screen.dart';
 import '../../features/app/widgets/main_navigation.dart';
 
 /// Application routing configuration using GoRouter.
@@ -21,14 +20,14 @@ class AppRouter {
 
   static final GoRouter router = GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: '/splash',
+    initialLocation: '/home',
     routes: [
-      // Non-shell routes
-      GoRoute(
-        path: '/splash',
-        name: 'splash',
-        builder: (context, state) => const SplashScreen(),
-      ),
+      // // Non-shell routes
+      // GoRoute(
+      //   path: '/splash',
+      //   name: 'splash',
+      //   builder: (context, state) => const SplashScreen(),
+      // ),
       // Shell routes
       ShellRoute(
         builder: (context, state, child) => MainNavigation(child: child),

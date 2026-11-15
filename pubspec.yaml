@@ -26,6 +26,17 @@ dependencies:
   flutter_launcher_icons: ^0.14.4
   flutter_speed_dial: ^7.0.0
 
+  # HTTP Client
+  dio: ^5.4.0
+  # HTTP Cookies
+  cookie_jar: ^4.0.8
+  dio_cookie_manager: ^3.2.0
+  # Path Provider (for cookie storage)
+  path_provider: ^2.1.1
+  # Dependency Injection
+  injectable: ^2.5.2
+  get_it: ^8.2.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -41,10 +52,8 @@ dev_dependencies:
   flutter_bloc: ^9.1.1
   # Code Generation & Immutability
   freezed_annotation: ^3.1.0
-  # Dependency Injection
-  injectable: ^2.5.2
-  get_it: ^8.2.0
-  flutter_screenutil: ^5.9.3
+  # Code Generation for Dependency Injection
+  injectable_generator: ^2.7.0
 
 # The following section is specific to Flutter packages.
 flutter:

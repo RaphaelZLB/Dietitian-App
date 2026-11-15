@@ -1,4 +1,4 @@
-import 'package:diet_app/core/app/app_theme.dart';
+import 'package:diet_app/core/utils/app_theme.dart';
 import 'package:diet_app/features/home/presentation/screens/ibw_bmi_bmr_tee.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -23,13 +23,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('EatSmart', style: headlineSmallBoldTextStyle(color: theme.colorScheme.primary),),
+        title: Text('EatSmart', style: headlineBoldTextStyle(color: theme.colorScheme.primary),),
         foregroundColor: theme.colorScheme.primary,
       ),
       floatingActionButton: SpeedDial(
         icon: Icons.add_outlined,
         // animatedIcon: AnimatedIcons.list_view,
-        animatedIconTheme: IconThemeData(size: Spacing.xlWidth),
+        animatedIconTheme: IconThemeData(size: Pixels.xl),
         backgroundColor: theme.colorScheme.primary,
         foregroundColor: theme.colorScheme.onPrimary,
         overlayColor: theme.colorScheme.primary,

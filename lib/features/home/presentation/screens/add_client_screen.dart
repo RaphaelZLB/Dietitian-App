@@ -1,29 +1,35 @@
-import 'package:diet_app/features/home/presentation/screens/formulas_calculator_result.dart';
+import 'package:diet_app/features/home/data/models/client_model.dart';
+import 'package:diet_app/features/home/data/services/client_storage_service.dart';
 import 'package:flutter/material.dart';
 
-class FormulasCalculator extends StatefulWidget {
-  const FormulasCalculator({super.key});
+class AddClientScreen extends StatefulWidget {
+  const AddClientScreen({super.key});
 
   @override
-  State<FormulasCalculator> createState() => _FormulasCalculatorState();
+  State<AddClientScreen> createState() => _AddClientScreenState();
 }
 
-class _FormulasCalculatorState extends State<FormulasCalculator> {
+class _AddClientScreenState extends State<AddClientScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _storageService = ClientStorageService();
+  bool _isLoading = false;
+
+  // Controllers
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _heightController = TextEditingController();
   final TextEditingController _weightController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
-  final TextEditingController _genderController = TextEditingController();
-  final TextEditingController _activityLevelController = TextEditingController();
-  final TextEditingController _goalController = TextEditingController();
-  final TextEditingController _dietTypeController = TextEditingController();
   final TextEditingController _dietPlanController = TextEditingController();
 
+  // Dropdown selections
   String? _selectedGender;
   String? _selectedActivityLevel;
   String? _selectedGoal;
   String? _selectedDietType;
 
+  // Options
   final List<String> _genders = ['Male', 'Female'];
   final List<String> _activityLevels = [
     'Inactive',
@@ -49,23 +55,23 @@ class _FormulasCalculatorState extends State<FormulasCalculator> {
 
   @override
   void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
     _heightController.dispose();
     _weightController.dispose();
     _ageController.dispose();
-    _genderController.dispose();
-    _activityLevelController.dispose();
-    _goalController.dispose();
-    _dietTypeController.dispose();
     _dietPlanController.dispose();
     super.dispose();
   }
 
-  void _calculate() {
-    // Validate all required fields
+  Future<void> _saveClient() async {
+    // Validate form
     if (!_formKey.currentState!.validate()) {
       return;
     }
 
+    // Validate dropdowns
     if (_selectedGender == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -96,30 +102,77 @@ class _FormulasCalculatorState extends State<FormulasCalculator> {
       return;
     }
 
-    // Save to controllers
-    _genderController.text = _selectedGender!;
-    _activityLevelController.text = _selectedActivityLevel!;
-    _goalController.text = _selectedGoal!;
-    if (_selectedDietType != null) {
-      _dietTypeController.text = _selectedDietType!;
-    }
+    setState(() {
+      _isLoading = true;
+    });
 
-    // Navigate to result page with data
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => FormulasCalculatorResult(
-          height: double.parse(_heightController.text),
-          weight: double.parse(_weightController.text),
-          age: int.parse(_ageController.text),
-          gender: _selectedGender!,
-          activityLevel: _selectedActivityLevel!,
-          goal: _selectedGoal!,
-          dietType: _selectedDietType,
-          dietPlanComments: _dietPlanController.text,
-        ),
-      ),
-    );
+    try {
+      // Create client model
+      final client = ClientModel(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        name: _nameController.text.trim(),
+        email: _emailController.text.trim(),
+        phone: _phoneController.text.trim().isEmpty
+            ? null
+            : _phoneController.text.trim(),
+        height: double.parse(_heightController.text),
+        weight: double.parse(_weightController.text),
+        age: int.parse(_ageController.text),
+        gender: _selectedGender!,
+        activityLevel: _selectedActivityLevel!,
+        goal: _selectedGoal!,
+        dietType: _selectedDietType,
+        dietPlanComments: _dietPlanController.text.trim().isEmpty
+            ? null
+            : _dietPlanController.text.trim(),
+        createdAt: DateTime.now(),
+      );
+
+      // Save client
+      final success = await _storageService.saveClient(client);
+
+      if (success) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Client saved successfully!'),
+              backgroundColor: Colors.green,
+              duration: Duration(seconds: 2),
+            ),
+          );
+          // Navigate back after a short delay
+          Future.delayed(const Duration(milliseconds: 500), () {
+            if (mounted) {
+              Navigator.pop(context, true); // Return true to indicate success
+            }
+          });
+        }
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Failed to save client. Please try again.'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   void _cancel() {
@@ -132,7 +185,7 @@ class _FormulasCalculatorState extends State<FormulasCalculator> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
-        title: const Text('Client Information'),
+        title: const Text('Add New Client'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -141,12 +194,83 @@ class _FormulasCalculatorState extends State<FormulasCalculator> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              // Section Header
+              Text(
+                'Personal Information',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+              ),
+              const SizedBox(height: 16),
+
+              // Name input
+              TextFormField(
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  labelText: 'Full Name *',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.person),
+                ),
+                textCapitalization: TextCapitalization.words,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Name is required';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+
+              // Email input
+              TextFormField(
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: const InputDecoration(
+                  labelText: 'Email *',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.email),
+                ),
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Email is required';
+                  }
+                  if (!value.contains('@') || !value.contains('.')) {
+                    return 'Please enter a valid email';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+
+              // Phone input
+              TextFormField(
+                controller: _phoneController,
+                keyboardType: TextInputType.phone,
+                decoration: const InputDecoration(
+                  labelText: 'Phone Number',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.phone),
+                ),
+              ),
+              const SizedBox(height: 24),
+
+              // Section Header
+              Text(
+                'Health Information',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+              ),
+              const SizedBox(height: 16),
+
               // Height input
               TextFormField(
                 controller: _heightController,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
-                  labelText: 'Height (cm)',
+                  labelText: 'Height (cm) *',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.height),
                 ),
@@ -154,8 +278,9 @@ class _FormulasCalculatorState extends State<FormulasCalculator> {
                   if (value == null || value.trim().isEmpty) {
                     return 'Height is required';
                   }
-                  if (double.tryParse(value) == null) {
-                    return 'Please enter a valid number';
+                  final height = double.tryParse(value);
+                  if (height == null || height <= 0 || height > 300) {
+                    return 'Please enter a valid height (1-300 cm)';
                   }
                   return null;
                 },
@@ -167,7 +292,7 @@ class _FormulasCalculatorState extends State<FormulasCalculator> {
                 controller: _weightController,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
-                  labelText: 'Weight (kg)',
+                  labelText: 'Weight (kg) *',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.monitor_weight),
                 ),
@@ -175,8 +300,9 @@ class _FormulasCalculatorState extends State<FormulasCalculator> {
                   if (value == null || value.trim().isEmpty) {
                     return 'Weight is required';
                   }
-                  if (double.tryParse(value) == null) {
-                    return 'Please enter a valid number';
+                  final weight = double.tryParse(value);
+                  if (weight == null || weight <= 0 || weight > 500) {
+                    return 'Please enter a valid weight (1-500 kg)';
                   }
                   return null;
                 },
@@ -188,7 +314,7 @@ class _FormulasCalculatorState extends State<FormulasCalculator> {
                 controller: _ageController,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
-                  labelText: 'Age',
+                  labelText: 'Age *',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.calendar_today),
                 ),
@@ -196,12 +322,9 @@ class _FormulasCalculatorState extends State<FormulasCalculator> {
                   if (value == null || value.trim().isEmpty) {
                     return 'Age is required';
                   }
-                  if (int.tryParse(value) == null) {
-                    return 'Please enter a valid number';
-                  }
-                  final age = int.parse(value);
-                  if (age < 1 || age > 150) {
-                    return 'Please enter a valid age';
+                  final age = int.tryParse(value);
+                  if (age == null || age < 1 || age > 150) {
+                    return 'Please enter a valid age (1-150)';
                   }
                   return null;
                 },
@@ -210,11 +333,11 @@ class _FormulasCalculatorState extends State<FormulasCalculator> {
 
               // Gender dropdown
               DropdownButtonFormField<String>(
-                value: _selectedGender,
+                initialValue: _selectedGender,
                 decoration: const InputDecoration(
-                  labelText: 'Gender',
+                  labelText: 'Gender *',
                   border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.person),
+                  prefixIcon: Icon(Icons.person_outline),
                 ),
                 items: _genders.map((String gender) {
                   return DropdownMenuItem<String>(
@@ -238,9 +361,9 @@ class _FormulasCalculatorState extends State<FormulasCalculator> {
 
               // Activity Level dropdown
               DropdownButtonFormField<String>(
-                value: _selectedActivityLevel,
+                initialValue: _selectedActivityLevel,
                 decoration: const InputDecoration(
-                  labelText: 'Activity Level',
+                  labelText: 'Activity Level *',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.fitness_center),
                 ),
@@ -266,9 +389,9 @@ class _FormulasCalculatorState extends State<FormulasCalculator> {
 
               // Goal dropdown
               DropdownButtonFormField<String>(
-                value: _selectedGoal,
+                initialValue: _selectedGoal,
                 decoration: const InputDecoration(
-                  labelText: 'Goal',
+                  labelText: 'Goal *',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.flag),
                 ),
@@ -294,7 +417,7 @@ class _FormulasCalculatorState extends State<FormulasCalculator> {
 
               // Diet Type dropdown
               DropdownButtonFormField<String>(
-                value: _selectedDietType,
+                initialValue: _selectedDietType,
                 decoration: const InputDecoration(
                   labelText: 'Diet Type',
                   border: OutlineInputBorder(),
@@ -314,7 +437,7 @@ class _FormulasCalculatorState extends State<FormulasCalculator> {
               ),
               const SizedBox(height: 16),
 
-              // Diet Plan input
+              // Diet Plan Comments input
               TextFormField(
                 controller: _dietPlanController,
                 maxLines: 3,
@@ -325,14 +448,14 @@ class _FormulasCalculatorState extends State<FormulasCalculator> {
                   alignLabelWithHint: true,
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 32),
 
-              // Calculate and Cancel buttons
+              // Cancel and Save buttons
               Row(
                 children: [
                   Expanded(
                     child: OutlinedButton(
-                      onPressed: _cancel,
+                      onPressed: _isLoading ? null : _cancel,
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
                       ),
@@ -345,16 +468,26 @@ class _FormulasCalculatorState extends State<FormulasCalculator> {
                   const SizedBox(width: 16),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: _calculate,
+                      onPressed: _isLoading ? null : _saveClient,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).colorScheme.primary,
                         foregroundColor: Theme.of(context).colorScheme.onPrimary,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                       ),
-                      child: const Text(
-                        'Calculate',
-                        style: TextStyle(fontSize: 16),
-                      ),
+                      child: _isLoading
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.white),
+                              ),
+                            )
+                          : const Text(
+                              'Save Client',
+                              style: TextStyle(fontSize: 16),
+                            ),
                     ),
                   ),
                 ],
